@@ -1,0 +1,131 @@
+{
+  "@context": "https://api-ub.vercel.app/ns/ubbont/context.json",
+  "id": "https://api-ub.vercel.app/items/ubb-ms-0185-j-a-007",
+  "type": [
+    "Manuscript",
+    "HumanMadeObject"
+  ],
+  "hasRepresentation": "http://data.ub.uib.no/instance/aggregation/ubb-ms-0185-j-a-007",
+  "hasThumbnail": "https://data.ub.uib.no/files/manlib/ubb/ubb-ms/ubb-ms-0185/ubb-ms-0185-j/ubb-ms-0185-j-a/ubb-ms-0185-j-a-007/jpg/ubb-ms-0185-j-a-007_p0001_th.jpg",
+  "placeOfPublication": {
+    "id": "http://data.ub.uib.no/instance/spatialthing/73bb250f-46da-4ae3-84b4-287afd6cdebb",
+    "type": "SpatialThing",
+    "identifier": "73bb250f-46da-4ae3-84b4-287afd6cdebb",
+    "label": {
+      "no": "Bergen"
+    }
+  },
+  "showWeb": true,
+  "image": "https://data.ub.uib.no/files/manlib/ubb/ubb-ms/ubb-ms-0185/ubb-ms-0185-j/ubb-ms-0185-j-a/ubb-ms-0185-j-a-007/jpg/ubb-ms-0185-j-a-007_p0001_md.jpg",
+  "subjectOfManifest": "https://api-ub.vercel.app/items/ubb-ms-0185-j-a-007/manifest",
+  "available": {
+    "type": "xsd:date",
+    "@value": "2020-05-19"
+  },
+  "created": {
+    "type": "xsd:date",
+    "@value": "1847-12-31"
+  },
+  "description": {
+    "no": ""
+  },
+  "identifier": "ubb-ms-0185-j-a-007",
+  "modified": "2021-06-21T14:42:13",
+  "relation": [
+    {
+      "id": "http://data.ub.uib.no/instance/person/3cd5c925-fae8-4a47-a89b-f93205bb932b",
+      "type": "Person",
+      "identifier": "3cd5c925-fae8-4a47-a89b-f93205bb932b",
+      "label": {
+        "no": "Peder Carolus Jonssøn Fylling"
+      }
+    }
+  ],
+  "subject": [
+    {
+      "id": "http://data.ub.uib.no/topic/091ff8e0-32e4-4f72-8097-25eeb8cafc51",
+      "type": "Concept",
+      "identifier": "091ff8e0-32e4-4f72-8097-25eeb8cafc51",
+      "label": {
+        "no": "Møre og Romsdal"
+      }
+    },
+    {
+      "id": "http://data.ub.uib.no/topic/80ab01a4-3ad9-4878-8823-75a8cdaa463d",
+      "type": "Concept",
+      "identifier": "80ab01a4-3ad9-4878-8823-75a8cdaa463d",
+      "label": {
+        "no": "Brev"
+      }
+    },
+    {
+      "id": "http://data.ub.uib.no/topic/6d411de6-58b0-4b29-8d66-5c76e99edf1d",
+      "type": "Concept",
+      "identifier": "6d411de6-58b0-4b29-8d66-5c76e99edf1d",
+      "label": {
+        "no": "Historie"
+      }
+    },
+    {
+      "id": "http://data.ub.uib.no/topic/e1dda2c5-8d43-4c0c-b50b-e03b4b2f7dc0",
+      "type": "Concept",
+      "identifier": "e1dda2c5-8d43-4c0c-b50b-e03b4b2f7dc0",
+      "label": {
+        "no": "Sunnmøre"
+      }
+    },
+    {
+      "id": "http://data.ub.uib.no/topic/3e403f6d-6420-484e-858f-48751ecb3305",
+      "type": "Concept",
+      "identifier": "3e403f6d-6420-484e-858f-48751ecb3305",
+      "label": {
+        "no": "Antikvariske opptegnelser"
+      }
+    },
+    {
+      "id": "http://data.ub.uib.no/topic/4c9f6063-6028-44d0-b519-2469ecb0e290",
+      "type": "Concept",
+      "identifier": "4c9f6063-6028-44d0-b519-2469ecb0e290",
+      "label": {
+        "no": "1800-tallet"
+      }
+    }
+  ],
+  "title": {
+    "no": "Brever til Fylling i Tiden 1846 - 1886."
+  },
+  "owner": {
+    "id": "http://data.ub.uib.no/instance/organization/de88f626-4b67-4fef-9d88-6930e8b5c645",
+    "type": "Organization",
+    "identifier": "de88f626-4b67-4fef-9d88-6930e8b5c645",
+    "label": {
+      "no": "Avdeling for Spesialsamlinger"
+    }
+  },
+  "pages": 4,
+  "label": {
+    "no": [
+      "Atheniensernes Historie. Hefte 15",
+      "Brever til Fylling i Tiden 1846 - 1886."
+    ]
+  },
+  "prefLabel": {
+    "no": "Atheniensernes Historie. Hefte 15"
+  },
+  "homepage": "http://marcus.uib.no/instance/manuscript/ubb-ms-0185-j-a-007",
+  "maker": [
+    {
+      "id": "http://data.ub.uib.no/instance/person/8be9846f-04ca-4008-9e75-a73b3c547de0",
+      "type": "Person",
+      "identifier": "8be9846f-04ca-4008-9e75-a73b3c547de0",
+      "label": {
+        "no": "D. Knudsen"
+      }
+    }
+  ],
+  "timespan": {
+    "edtf": "1847-12-31",
+    "beginOfTheBegin": "1847-12-31T00:00:00.000Z",
+    "endOfTheEnd": "1848-01-01T00:00:00.000Z"
+  }
+}
