@@ -1,11 +1,11 @@
 
 import React from 'react';
-import {
+/* import {
   GoogleMapsLoader,
   GeoSearch,
   Control,
   Marker,
-} from 'react-instantsearch-dom-maps';
+} from 'react-instantsearch-dom-maps'; */
 import { InstantSearch, Highlight, CurrentRefinements, Stats, RangeInput, Panel, RefinementList, HierarchicalMenu, SearchBox, Hits, Pagination, ToggleRefinement, ClearRefinements } from "react-instantsearch-dom";
 import { searchkitClient } from './searchkitConfig'
 import { uniqBy } from 'lodash';
