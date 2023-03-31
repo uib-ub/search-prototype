@@ -1,11 +1,11 @@
 
 import React from 'react';
-import {
+/* import {
   GoogleMapsLoader,
   GeoSearch,
   Control,
   Marker,
-} from 'react-instantsearch-dom-maps';
+} from 'react-instantsearch-dom-maps'; */
 import { InstantSearch, Highlight, CurrentRefinements, Stats, RangeInput, Panel, RefinementList, HierarchicalMenu, SearchBox, Hits, Pagination, ToggleRefinement, ClearRefinements } from "react-instantsearch-dom";
 import { searchkitClient } from './searchkitConfig'
 import { uniqBy } from 'lodash';
@@ -136,7 +136,7 @@ export default function SearchKit() {
       </InstantSearch>
 
 
-      <div style={{ height: 500 }}>
+      {/* <div style={{ height: 500 }}>
         <GoogleMapsLoader apiKey={process.env.GOOGLE_MAPS_APIKEY}>
           {google => (
             <GeoSearch google={google}>
@@ -151,7 +151,7 @@ export default function SearchKit() {
             </GeoSearch>
           )}
         </GoogleMapsLoader>
-      </div>
+      </div> */}
     </>
   )
 }
