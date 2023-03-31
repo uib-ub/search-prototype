@@ -1,5 +1,6 @@
-import createClient from "@searchkit/instantsearch-client";
+import Client from "@searchkit/instantsearch-client";
 
-export const searchkitClient = createClient({
+
+export const searchkitClient = Client({
   url: "/api/searchkit",
 });

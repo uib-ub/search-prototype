@@ -1,11 +1,11 @@
 
 import React from 'react';
-/* import {
+import {
   GoogleMapsLoader,
   GeoSearch,
   Control,
   Marker,
-} from 'react-instantsearch-dom-maps'; */
+} from 'react-instantsearch-dom-maps';
 import { InstantSearch, Highlight, CurrentRefinements, Stats, RangeInput, Panel, RefinementList, HierarchicalMenu, SearchBox, Hits, Pagination, ToggleRefinement, ClearRefinements } from "react-instantsearch-dom";
 import { searchkitClient } from './searchkitConfig'
 import { uniqBy } from 'lodash';
@@ -21,62 +21,72 @@ const renderHTML = (rawHTML) => React.createElement("div", { dangerouslySetInner
 
 function Hit({ hit }) {
   return (
-    <div className='w-full flex gap-4'>
+    <div key={hit.objectID} className='w-full flex gap-4'>
       <div className='w-1/4 max-h-96 overflow-hidden'>
-        <Image src={hit.image} alt='' width={300} height={300} />
-        <a href={`https://projectmirador.org/embed/?manifest=${hit.id}?as=iiif`} target="_blank" rel='noreferrer'>Open in Mirador</a>
+        {hit.image ? (
+          <Image src={hit.image} alt='' width={300} height={300} />
+        ) : (
+          <div className="h-64 opacity-25 bg-gradient-to-r from-slate-500 to-yellow-100"></div>
+        )}
+        <a href={`https://projectmirador.org/embed/?manifest=${hit.subjectOfManifest}`} target="_blank" rel='noreferrer'>Open in Mirador</a>
         <br />
         <a href={hit.homepage} target="_blank" rel='noreferrer'>Open in Marcus</a>
       </div>
 
       <div className='w-3/4'>
         <h2 className='text-4xl font-bold'>
-          <a href={hit.id} target='_blank' rel="noreferrer">
-            <Highlight attribute="label_no" hit={hit} />
+          <a href={`https://chc-web.vercel.app/id/${hit.identifier}`} target='_blank' rel="noreferrer">
+            {/* <Highlight attribute="hit.label_none" hit={hit} /> */}
+            {hit.label_none ?? hit.label?.no}
           </a>
         </h2>
         <div className='font-bold text-xl'>
           {hit.maker && hit.maker.map(m => (
-            <>
-              <Highlight key={m.id} attribute={m.label_no} hit={m} />
-              {m.label_no}
-            </>
+            <div key={m.id}>
+              {m.label_none}
+            </div>
           ))}
         </div>
 
         <div className='my-1 flex flex-wrap gap-2'>
-          {hit.type ? hit.type.map(t => (
+          {Array.isArray(hit.type) ? hit.type.map(t => (
             <div key={t} className=' px-2 bg-green-600 text-white rounded'>{t}</div>
-          )) : null}
+          )) : [hit.type].map(t => (
+            <div key={t} className=' px-2 bg-green-600 text-white rounded'>{t}</div>
+          ))}
         </div>
 
         <div className='my-1 inline-block px-2 bg-neutral-600 text-white rounded'>{hit.identifier}</div>
 
         <div className='my-1 flex flex-wrap gap-2'>
           {hit.subject ? hit.subject.map(t => (
-            <div key={t.id} className=' px-2 bg-teal-600 text-white rounded'>{t.label_no}</div>
+            <div key={t.id} className=' px-2 bg-teal-600 text-white rounded'>{t.label_none}</div>
           )) : null}
         </div>
 
         <div className='my-1 flex flex-wrap gap-2'>
           {hit.spatial ? hit.spatial.map(t => (
-            <div key={t.id} className=' px-2 bg-yellow-600 text-white rounded'>{t.label_no}</div>
+            <div key={t.id} className=' px-2 bg-yellow-600 text-white rounded'>{t.label_none}</div>
           )) : null}
         </div>
 
         <div className='my-1 flex flex-wrap gap-2'>
           {hit.technique ? hit.technique.map(t => (
-            <div key={t.id} className=' px-2 bg-purple-500 text-white rounded'>{t.label_no}</div>
+            <div key={t.id} className=' px-2 bg-purple-500 text-white rounded'>{t.label_none}</div>
           )) : null}
         </div>
 
-        {hit.description_no ? (<div className='my-5'>{renderHTML(hit.description_no)}</div>) : null}
+        {hit.description_none ?? hit.description?.no ? (
+          <>
+            <div className='my-5 text-lg'>{renderHTML(hit.description_none ?? hit.description?.no)}</div>
+          </>
+        ) : null}
 
-        {/* <div>
+        <div>
           <pre className='overflow-scroll max-w-full h-60'>
             <code>{JSON.stringify(hit, null, 2)}</code>
           </pre>
-        </div> */}
+        </div>
       </div>
     </div>
   );
@@ -95,10 +105,11 @@ export default function SearchKit() {
         <div style={{ display: 'flex', gap: '1em', width: '100%' }}>
           <div style={{ width: '25%' }}>
             <ClearRefinements />
+            <RefinementList attribute="type" searchable />
             <h2>Skapere</h2>
-            <RefinementList attribute="maker.label_no" searchable />
+            <RefinementList attribute="maker.label_none" searchable />
             <h2>Emner</h2>
-            <RefinementList attribute="subject.label_no" searchable />
+            <RefinementList attribute="subject.label_none" searchable />
             {/* <HierarchicalMenu
               attributes={[
                 'hierarchicalPlaces.lvl0',
@@ -107,10 +118,10 @@ export default function SearchKit() {
               ]}
               defaultRefinement="Bergen"
             /> */}
+
             <h2>Steder</h2>
-            <RefinementList attribute="spatial.label_no" searchable />
-            <h2>WIP: CREATED</h2>
-            <RangeInput attribute="created" />
+            <RefinementList attribute="spatial.label_none" searchable />
+
           </div>
           <div style={{ width: '75%' }}>
             <Stats />
@@ -125,7 +136,7 @@ export default function SearchKit() {
       </InstantSearch>
 
 
-      {/* <div style={{ height: 500 }}>
+      <div style={{ height: 500 }}>
         <GoogleMapsLoader apiKey={process.env.GOOGLE_MAPS_APIKEY}>
           {google => (
             <GeoSearch google={google}>
@@ -140,7 +151,7 @@ export default function SearchKit() {
             </GeoSearch>
           )}
         </GoogleMapsLoader>
-      </div> */}
+      </div>
     </>
   )
 }
