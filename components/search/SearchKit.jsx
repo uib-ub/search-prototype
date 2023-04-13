@@ -1,99 +1,33 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 /* import {
   GoogleMapsLoader,
   GeoSearch,
   Control,
   Marker,
 } from 'react-instantsearch-dom-maps'; */
-import { InstantSearch, Highlight, CurrentRefinements, Stats, RangeInput, Panel, RefinementList, HierarchicalMenu, SearchBox, Hits, Pagination, ToggleRefinement, ClearRefinements } from "react-instantsearch-dom";
+import { connectHits, InstantSearch, CurrentRefinements, Stats, RangeInput, Panel, RefinementList, HierarchicalMenu, SearchBox, Hits, Pagination, ToggleRefinement, ClearRefinements } from "react-instantsearch-dom";
 import { searchkitClient } from './searchkitConfig'
 import { uniqBy } from 'lodash';
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
+import { HitList, HitCard } from './Hit'
+import * as Switch from '@radix-ui/react-switch';
+import styles from './SearchKit.module.css'
+
+const CustomHitsList = connectHits(HitList);
+const CustomHitsCard = connectHits(HitCard);
 
 function deduplicate(items) {
   return uniqBy(items, item => item.attribute);
 }
 
-const renderHTML = (rawHTML) => React.createElement("div", { dangerouslySetInnerHTML: { __html: rawHTML } });
-
-
-function Hit({ hit }) {
-  return (
-    <div key={hit.objectID} className='w-full flex gap-4'>
-      <div className='w-1/4 max-h-96 overflow-hidden'>
-        {hit.image ? (
-          <Image src={hit.image} alt='' width={300} height={300} />
-        ) : (
-          <div className="h-64 opacity-25 bg-gradient-to-r from-slate-500 to-yellow-100"></div>
-        )}
-        <a href={`https://projectmirador.org/embed/?manifest=${hit.subjectOfManifest}`} target="_blank" rel='noreferrer'>Open in Mirador</a>
-        <br />
-        <a href={hit.homepage} target="_blank" rel='noreferrer'>Open in Marcus</a>
-      </div>
-
-      <div className='w-3/4'>
-        <h2 className='text-4xl font-bold'>
-          <a href={`https://chc-web.vercel.app/id/${hit.identifier}`} target='_blank' rel="noreferrer">
-            {/* <Highlight attribute="hit.label_none" hit={hit} /> */}
-            {hit.label_none ?? hit.label?.no}
-          </a>
-        </h2>
-        <div className='font-bold text-xl'>
-          {hit.maker && hit.maker.map(m => (
-            <div key={m.id}>
-              {m.label_none}
-            </div>
-          ))}
-        </div>
-
-        <div className='my-1 flex flex-wrap gap-2'>
-          {Array.isArray(hit.type) ? hit.type.map(t => (
-            <div key={t} className=' px-2 bg-green-600 text-white rounded'>{t}</div>
-          )) : [hit.type].map(t => (
-            <div key={t} className=' px-2 bg-green-600 text-white rounded'>{t}</div>
-          ))}
-        </div>
-
-        <div className='my-1 inline-block px-2 bg-neutral-600 text-white rounded'>{hit.identifier}</div>
-
-        <div className='my-1 flex flex-wrap gap-2'>
-          {hit.subject ? hit.subject.map(t => (
-            <div key={t.id} className=' px-2 bg-teal-600 text-white rounded'>{t.label_none}</div>
-          )) : null}
-        </div>
-
-        <div className='my-1 flex flex-wrap gap-2'>
-          {hit.spatial ? hit.spatial.map(t => (
-            <div key={t.id} className=' px-2 bg-yellow-600 text-white rounded'>{t.label_none}</div>
-          )) : null}
-        </div>
-
-        <div className='my-1 flex flex-wrap gap-2'>
-          {hit.technique ? hit.technique.map(t => (
-            <div key={t.id} className=' px-2 bg-purple-500 text-white rounded'>{t.label_none}</div>
-          )) : null}
-        </div>
-
-        {hit.description_none ?? hit.description?.no ? (
-          <>
-            <div className='my-5 text-lg'>{renderHTML(hit.description_none ?? hit.description?.no)}</div>
-          </>
-        ) : null}
-
-        <div>
-          <pre className='overflow-scroll max-w-full h-60'>
-            <code>{JSON.stringify(hit, null, 2)}</code>
-          </pre>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export default function SearchKit() {
   const { locale } = useRouter()
+  const [viewer, toggleViewer] = useState(false)
+
+  const onOptionChange = e => {
+    toggleViewer(!viewer)
+  }
 
   return (
     <>
@@ -102,9 +36,23 @@ export default function SearchKit() {
         indexName="marcus-demo"
       >
         <SearchBox />
-        <div style={{ display: 'flex', gap: '1em', width: '100%' }}>
-          <div style={{ width: '25%' }}>
+        <div style={{ display: 'flex', gap: '2em', width: '100%' }}>
+          <div style={{ width: '20%' }}>
             <ClearRefinements />
+            <form>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <label className={styles.Label} htmlFor="viewer" style={{ paddingRight: 15 }}>
+                  Card view
+                </label>
+                <Switch.Root className={styles.SwitchRoot} id="viewer" onCheckedChange={onOptionChange}>
+                  <Switch.Thumb className={styles.SwitchThumb} />
+                </Switch.Root>
+                <label className={styles.Label} htmlFor="viewer" style={{ paddingLeft: 15 }}>
+                  List view
+                </label>
+              </div>
+            </form>
+
             <RefinementList attribute="type" searchable />
             <h2>Skapere</h2>
             <RefinementList attribute="maker.label_none" searchable />
@@ -123,13 +71,15 @@ export default function SearchKit() {
             <RefinementList attribute="spatial.label_none" searchable />
 
           </div>
-          <div style={{ width: '75%' }}>
+          <div style={{ width: '80%' }}>
             <Stats />
             <CurrentRefinements
               transformItems={items => deduplicate(items)}
             />
             <Pagination />
-            <Hits hitComponent={Hit} />
+            {
+              viewer ? <CustomHitsCard /> : <CustomHitsList />
+            }
             <Pagination />
           </div>
         </div>
