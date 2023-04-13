@@ -76,7 +76,7 @@ const client = Client({
     ],
     geo_attribute: "location",
   },
-}, { debug: true });
+}, { debug: false });
 
 export default async function handler(
   req: NextApiRequest,
