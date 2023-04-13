@@ -8,7 +8,7 @@ const renderHTML = (rawHTML) => React.createElement("div", { dangerouslySetInner
 
 export function HitCard({ hits }) {
   return (
-    <section className='grid grid-cols-3 gap-x-3 gap-y-10 my-2 items-end'>
+    <section className='grid grid-cols-3 gap-x-5 gap-y-10 my-2'>
       {hits.map((hit) => (
         <article key={hit.objectID}>
           <a href={`https://chc-web.vercel.app/items/${hit.identifier}`} target='_blank' rel="noreferrer">
@@ -16,7 +16,7 @@ export function HitCard({ hits }) {
               <div className='relative flex flex-col flex-grow gap-y-3'>
                 {
                   hit.image ? (
-                    <Image src={hit.image} alt='' width={300} height={300} className="w-full object-contain" />
+                    <Image src={hit.image} alt='' width={300} height={300} className="w-full object-contain rounded" />
                   ) : (
                     <div className="min-h-64 p-10 inline-block flex-grow-1  w-full opacity-25 bg-gradient-to-r from-slate-500 to-yellow-100">
                       No image found!
@@ -117,12 +117,12 @@ export function HitCard({ hits }) {
 
 export function HitList({ hits }) {
   return (
-    <section className='grid grid-cols-1 gap-x-3 gap-y-10 my-2 items-end'>
+    <section className='grid grid-cols-1 gap-x-5 gap-y-10 my-2 items-end'>
       {hits.map((hit) => (
         <div key={hit.objectID} className='w-full flex gap-4'>
           <div className='w-4/12 overflow-hidden'>
             {hit.image ? (
-              <Image src={hit.image} alt='' width={600} height={600} className="w-full object-contain" />
+              <Image src={hit.image} alt='' width={600} height={600} className="w-full object-contain rounded" />
             ) : (
               <div className="h-64 opacity-25 bg-gradient-to-r from-slate-500 to-yellow-100"></div>
             )}

@@ -6,16 +6,18 @@ import React, { useState } from 'react';
   Control,
   Marker,
 } from 'react-instantsearch-dom-maps'; */
-import { connectHits, InstantSearch, CurrentRefinements, Stats, RangeInput, Panel, RefinementList, HierarchicalMenu, SearchBox, Hits, Pagination, ToggleRefinement, ClearRefinements } from "react-instantsearch-dom";
+import { connectHits, connectStateResults, connectSearchBox, InstantSearch, CurrentRefinements, Stats, RangeInput, Panel, RefinementList, HierarchicalMenu, Hits, Pagination, ToggleRefinement, ClearRefinements, ScrollTo } from "react-instantsearch-dom";
 import { searchkitClient } from './searchkitConfig'
 import { uniqBy } from 'lodash';
 import { useRouter } from 'next/navigation';
 import { HitList, HitCard } from './Hit'
+import { SearchBox } from './SearchBox'
 import * as Switch from '@radix-ui/react-switch';
 import styles from './SearchKit.module.css'
 
 const CustomHitsList = connectHits(HitList);
 const CustomHitsCard = connectHits(HitCard);
+const DebouncedSearchBox = connectSearchBox(SearchBox)
 
 function deduplicate(items) {
   return uniqBy(items, item => item.attribute);
@@ -23,24 +25,34 @@ function deduplicate(items) {
 
 export default function SearchKit() {
   const { locale } = useRouter()
-  const [viewer, toggleViewer] = useState(false)
+  const [listViewer, toggleListViewer] = useState(false)
 
   const onOptionChange = e => {
-    toggleViewer(!viewer)
+    toggleListViewer(!listViewer)
   }
+
+  const LoadingIndicator = connectStateResults(({ isSearchStalled }) =>
+    isSearchStalled ? 'Loading...' : null
+  )
 
   return (
     <>
+      <div className='flex gap-3'>
+        <a href='https://chc-web.vercel.app/' className='text-lg font-bold'>← CHC-WEB</a>
+      </div>
       <InstantSearch
         searchClient={searchkitClient}
         indexName="marcus-demo"
       >
-        <SearchBox />
+        <DebouncedSearchBox delay={600} showLoadingIndicator />
+
+        <LoadingIndicator />
+
         <div style={{ display: 'flex', gap: '2em', width: '100%' }}>
           <div style={{ width: '20%' }}>
             <ClearRefinements />
             <form>
-              <div style={{ display: 'flex', alignItems: 'center' }}>
+              <div className='flex my-3 items-center'>
                 <label className={styles.Label} htmlFor="viewer" style={{ paddingRight: 15 }}>
                   Card view
                 </label>
@@ -77,9 +89,10 @@ export default function SearchKit() {
               transformItems={items => deduplicate(items)}
             />
             <Pagination />
-            {
-              viewer ? <CustomHitsCard /> : <CustomHitsList />
-            }
+
+            <ScrollTo>
+              {listViewer ? <CustomHitsList /> : <CustomHitsCard />}
+            </ScrollTo>
             <Pagination />
           </div>
         </div>
